@@ -1,0 +1,36 @@
+version: 1.0.0
+name: Melita Profile Filter
+description: Module filters Melita payloads by profile IDs and matched payloads forwards to new endpoint while others forwards to regular next EGRESS module in pipeline.
+icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_melita_process.png
+type: process
+tags:
+  - Innotas
+  - Decoder
+categories:
+  - id: category
+    name: Policy
+image:
+  name: weevenetwork/melita-profile-filter
+  tag: latest
+environments:
+  - key: PROFILE_IDS
+    description: Comma separated list of profile IDs
+    value: ''
+    default: ''
+    type: string
+    name: Profile IDs
+  - key: MATCHED_URL
+    description: URL for forwarding payloads to for matched IDs
+    value: ''
+    default: ''
+    type: string
+    name: Match URL
+commands: []
+document:
+  ports: []
+  volumes: []
+  restart_policy:
+    condition: on-failure
+    delay: 10s
+    max_attempts: 3
+    window: 120s
