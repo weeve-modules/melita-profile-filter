@@ -8,7 +8,7 @@ tags:
   - Decoder
 categories:
   - id: category
-    name: Policy
+    name: Policies
 image:
   name: weevenetwork/melita-profile-filter
   tag: latest
