@@ -1,7 +1,7 @@
 version: 1.0.0
 name: Melita Profile Filter
 description: Module filters Melita payloads by profile IDs and matched payloads forwards to new endpoint while others forwards to regular next EGRESS module in pipeline.
-icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_inno_decoder_process.png
+icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_melita_process.png
 type: process
 tags:
   - Innotas
