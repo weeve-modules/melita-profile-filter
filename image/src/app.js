@@ -60,16 +60,18 @@ app.post('/', async (req, res) => {
     return res.status(400).json({ status: false, message: 'Payload not provided.' })
   }
   if (PROFILE_IDS !== '' && MATCHED_URL !== '' && json.tags) {
-    let ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
-    if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
-      const callRes = await fetch(MATCHED_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(json),
-      })
-      return res.status(200).json({ status: true, message: 'Payload forwarded to matched URL.' })
+    if (json.tags.deviceProfileId) {
+      let ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
+      if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
+        const callRes = await fetch(MATCHED_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(json),
+        })
+        return res.status(200).json({ status: true, message: 'Payload forwarded to matched URL.' })
+      }
     }
   }
   if (EGRESS_URL) {
