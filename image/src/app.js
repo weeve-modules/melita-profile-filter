@@ -75,7 +75,7 @@ app.post('/', async (req, res) => {
       return res.status(200).json({ status: true, message: 'Payload forwarded to matched URL.' })
     }
   }
-  if (isValidURL(EGRESS_URL)) {
+  if (EGRESS_URL) {
     const callRes = await fetch(EGRESS_URL, {
       method: 'POST',
       headers: {
