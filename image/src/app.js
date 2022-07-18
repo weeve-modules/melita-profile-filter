@@ -59,10 +59,7 @@ app.post('/', async (req, res) => {
   if (!json) {
     return res.status(400).json({ status: false, message: 'Payload not provided.' })
   }
-  if (typeof json.tags === undefined || typeof json.devEUI === undefined) {
-    return res.status(400).json({ status: false, message: 'Payload not valid.' })
-  }
-  if (PROFILE_IDS !== '' && MATCHED_URL !== '') {
+  if (PROFILE_IDS !== '' && MATCHED_URL !== '' && json.tags) {
     let ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
     if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
       const callRes = await fetch(MATCHED_URL, {
