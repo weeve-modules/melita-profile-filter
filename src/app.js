@@ -1,4 +1,4 @@
-const { EGRESS_URL, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
+const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
@@ -74,8 +74,8 @@ app.post('/', async (req, res) => {
       }
     }
   }
-  if (EGRESS_URL) {
-    const callRes = await fetch(EGRESS_URL, {
+  if (EGRESS_URLS) {
+    const callRes = await fetch(EGRESS_URLS, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
