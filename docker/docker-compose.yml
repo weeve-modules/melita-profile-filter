@@ -1,0 +1,16 @@
+version: "3.0"
+services:
+  melita-profile-filter:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      MODULE_NAME: "Melita Profile Filter"
+      MODULE_TYPE: "Processing"
+      EGRESS_URLS: "https://testdockercompose.free.beeceptor.com"
+      INGRESS_HOST: "0.0.0.0"
+      INGRESS_PORT: "80"
+      PROFILE_IDS: ''
+      MATCHED_URL: ''
+    ports:
+      - 80:80

@@ -82,10 +82,11 @@ Module filters Melita payloads by profile IDs and matched payloads forwards to n
 
 ## Environment Variables
 
-- INGRESS_HOST
-- INGRESS_PORT
-- PROFILE_IDS
-- MATCHED_URL
+
+| Environment Variables | type   | Description                  |
+| --------------------- | ------ | ---------------------------- |
+| PROFILE_IDS           | string | List of profile IDs to match |
+| MATCHED_URL           | string | URL for matched profile IDs  |
 
 ### Module Specific
 
@@ -96,8 +97,6 @@ Module filters Melita payloads by profile IDs and matched payloads forwards to n
 | MODULE_NAME           | string | Name of the module           |
 | INGRESS_HOST          | string | Host where app is running    |
 | INGRESS_PORT          | string | Port where app is running    |
-| PROFILE_IDS           | string | List of profile IDs to match |
-| MATCHED_URL           | string | URL for matched profile IDs  |
 
 ## Dependencies
 
