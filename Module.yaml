@@ -16,12 +16,12 @@ envs:                                   # Array of environment variables that wi
     key: PROFILE_IDS
     description: Comma separated list of profile IDs
     value: ''
-    type: 'string'
+    type: 'text'
   - name: Match URL
     key: MATCHED_URL
     description: URL for forwarding payloads to for matched IDs
     value: ''
-    type: 'string'
+    type: 'text'
 ports:                                  # Array of ports that will be exposed by the module.
   - container: 8080                     # Port number from the container.
     host: 8080                          # Port number to map on the host.
