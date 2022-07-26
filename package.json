@@ -7,8 +7,8 @@
     "start": "node src/app.js",
     "develop:env": "nodemon --require dotenv/config src/app.js",
     "develop": "nodemon src/app.js",
-    "lint-fix": "eslint --ext js --fix ./image/src",
-    "lint": "eslint --ext js ./image/src",
+    "lint-fix": "eslint --ext js --fix ./src",
+    "lint": "eslint --ext js ./src",
     "format": "prettier --write \"**/*.{js,json,md}\""
   },
   "repository": {

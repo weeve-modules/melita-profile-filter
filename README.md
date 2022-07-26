@@ -82,7 +82,6 @@ Module filters Melita payloads by profile IDs and matched payloads forwards to n
 
 ## Environment Variables
 
-
 | Environment Variables | type   | Description                  |
 | --------------------- | ------ | ---------------------------- |
 | PROFILE_IDS           | string | List of profile IDs to match |
@@ -92,11 +91,11 @@ Module filters Melita payloads by profile IDs and matched payloads forwards to n
 
 ### Set by the weeve Agent on the edge-node
 
-| Environment Variables | type   | Description                  |
-| --------------------- | ------ | ---------------------------- |
-| MODULE_NAME           | string | Name of the module           |
-| INGRESS_HOST          | string | Host where app is running    |
-| INGRESS_PORT          | string | Port where app is running    |
+| Environment Variables | type   | Description               |
+| --------------------- | ------ | ------------------------- |
+| MODULE_NAME           | string | Name of the module        |
+| INGRESS_HOST          | string | Host where app is running |
+| INGRESS_PORT          | string | Port where app is running |
 
 ## Dependencies
 
