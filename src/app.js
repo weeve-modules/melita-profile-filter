@@ -1,13 +1,12 @@
-const { EGRESS_URL, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
+const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-const { formatTimeDiff, isValidURL } = require('./utils/util')
-const fs = require('fs')
+const { formatTimeDiff } = require('./utils/util')
 
-//initialization
+// initialization
 app.use(express.urlencoded({ extended: true }))
 app.use(
   express.json({
@@ -21,7 +20,7 @@ app.use(
   })
 )
 
-//logger
+// logger
 app.use(
   expressWinston.logger({
     transports: [
@@ -43,7 +42,7 @@ app.use(
   })
 )
 const startTime = Date.now()
-//health check
+// health check
 app.get('/health', async (req, res) => {
   res.json({
     serverStatus: 'Running',
@@ -51,19 +50,19 @@ app.get('/health', async (req, res) => {
     module: MODULE_NAME,
   })
 })
-//main post listener
+// main post listener
 app.post('/', async (req, res) => {
-  let json = req.body
-  //for some reason melita is sending JSON structure from payload, and not payload property
+  const json = req.body
+  // for some reason melita is sending JSON structure from payload, and not payload property
   // so to be sure, we will support both
   if (!json) {
     return res.status(400).json({ status: false, message: 'Payload not provided.' })
   }
   if (PROFILE_IDS !== '' && MATCHED_URL !== '' && json.tags) {
     if (json.tags.deviceProfileId) {
-      let ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
+      const ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
       if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
-        const callRes = await fetch(MATCHED_URL, {
+        await fetch(MATCHED_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -74,8 +73,8 @@ app.post('/', async (req, res) => {
       }
     }
   }
-  if (EGRESS_URL) {
-    const callRes = await fetch(EGRESS_URL, {
+  if (EGRESS_URLS) {
+    await fetch(EGRESS_URLS, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -86,12 +85,12 @@ app.post('/', async (req, res) => {
   return res.end()
 })
 
-//handle exceptions
+// handle exceptions
 app.use(async (err, req, res, next) => {
   if (res.headersSent) {
     return next(err)
   }
-  let errCode = err.status || 401
+  const errCode = err.status || 401
   res.status(errCode).send({
     status: false,
     message: err.message,

@@ -1,36 +1,36 @@
-version: 1.0.0
-name: Melita Profile Filter
-description: Module filters Melita payloads by profile IDs and matched payloads forwards to new endpoint while others forwards to regular next EGRESS module in pipeline.
-icon: https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_melita_process.png
-type: process
-tags:
-  - Innotas
-  - Decoder
-categories:
-  - id: category
-    name: Policies
+displayName: 'Melita Profile Filter'       # Display name for the module that will be displayed in the UI.
+moduleName: 'melita-profile-filter'        # Module name that will be used to reference the module, and uniquely identify the module and their versions.
+description: 'Module filters Melita payloads by profile IDs and matched payloads forwards to new endpoint while others forwards to regular next EGRESS module in pipeline.'       # Module description that will be displayed in the UI.
+versionName: 'v1.0.0'                    # Module version name that will be used to reference the module version, and uniquely identify the module version with a common name.
+isPublic: true                          # Boolean value that indicates if the module is Public or Private.
+categories:                             # Array of category that will be used to group the module in the UI.
+  - 'Melita'
+type: 'Processing'      # Module type (Input, Processing, Output) that will be used to group the module in the UI.
 image:
-  name: weevenetwork/melita-profile-filter
-  tag: latest
-environments:
-  - key: PROFILE_IDS
+  name: 'weevenetwork/melita-profile-filter'     # Image name from the docker registry.
+  tag: 'v1.0.0'                               # Image tag from the docker registry.
+  homepage: 'https://hub.docker.com/weevenetwork/melita-profile-filter'      # Image homepage from the docker registry.
+repository: 'https://github.com/weeve-modules/melita-profile-filter'     # Repository URL to source code.
+envs:                                   # Array of environment variables that will be used to configure the module. Also used to show related fields on the UI.
+  - name: Profile IDs
+    key: PROFILE_IDS
     description: Comma separated list of profile IDs
     value: ''
-    default: ''
-    type: string
-    name: Profile IDs
-  - key: MATCHED_URL
+    type: 'text'
+  - name: Match URL
+    key: MATCHED_URL
     description: URL for forwarding payloads to for matched IDs
     value: ''
-    default: ''
-    type: string
-    name: Match URL
-commands: []
-document:
-  ports: []
-  volumes: []
-  restart_policy:
-    condition: on-failure
-    delay: 10s
-    max_attempts: 3
-    window: 120s
+    type: 'text'
+ports:                                  # Array of ports that will be exposed by the module.
+  - container: 8080                     # Port number from the container.
+    host: 8080                          # Port number to map on the host.
+mounts:
+  - container: '/data'                  # Mount path from the container.
+    host: '/data'                       # Mount path to map on the host.
+tags:                                   # Array of tags.
+  - 'NodeJS'
+  - 'Processing'
+  - 'Melita'
+  - 'Boilerplate 1.0.0'
+icon: 'https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_melita_process.png'    # Icon URL that will be displayed in the UI.
