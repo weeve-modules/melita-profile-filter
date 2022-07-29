@@ -28,5 +28,11 @@ else
 fi
 echo "[ENTRYPOINT] Environment validated."
 
+# Check volume mounts
+if [ ! -c "$VOLUME_CONTAINER" ]; then
+    echo "Entrypoint validation error: Expected a character special file object at $VOLUME_CONTAINER"
+    exit 1
+fi
+
 # CALL THE MAIN SCRIPT
 npm run start "$@"
