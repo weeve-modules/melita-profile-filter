@@ -10,29 +10,20 @@ echo "[ENTRYPOINT] Entrypoint script for the module."
 : "${MODULE_TYPE:?Need to set MODULE_TYPE environment variable to string (Input, Processing, Output)}"
 
 # Validate the environment according to module type
-if [[ "$MODULE_TYPE" == "Input" ]]
-then
-    : "${EGRESS_URLS:?Need to set EGRESS_URLS environment variable to string}"
-elif [[ "$MODULE_TYPE" == "Processing" ]]
-then
-    : "${INGRESS_HOST:?Need to set INGRESS_HOST environment variable to string}"
-    : "${INGRESS_PORT:?Need to set INGRESS_PORT environment variable to string}"
-    : "${EGRESS_URLS:?Need to set EGRESS_URLS environment variable to string}"
-elif [[ "$MODULE_TYPE" == "Output" ]]
-then
-    : "${INGRESS_HOST:?Need to set INGRESS_HOST environment variable to string}"
-    : "${INGRESS_PORT:?Need to set INGRESS_PORT environment variable to string}"
+if [[ "$MODULE_TYPE" == "Input" ]]; then
+  : "${EGRESS_URLS:?Need to set EGRESS_URLS environment variable to string}"
+elif [[ "$MODULE_TYPE" == "Processing" ]]; then
+  : "${INGRESS_HOST:?Need to set INGRESS_HOST environment variable to string}"
+  : "${INGRESS_PORT:?Need to set INGRESS_PORT environment variable to string}"
+  : "${EGRESS_URLS:?Need to set EGRESS_URLS environment variable to string}"
+elif [[ "$MODULE_TYPE" == "Output" ]]; then
+  : "${INGRESS_HOST:?Need to set INGRESS_HOST environment variable to string}"
+  : "${INGRESS_PORT:?Need to set INGRESS_PORT environment variable to string}"
 else
-    echo "Unrecognized MODULE_TYPE = $MODULE_TYPE, choose from Input, Processing, Output"
-    exit 1
+  echo "Unrecognized MODULE_TYPE = $MODULE_TYPE, choose from Input, Processing, Output"
+  exit 1
 fi
 echo "[ENTRYPOINT] Environment validated."
-
-# Check volume mounts
-if [ ! -c "$VOLUME_CONTAINER" ]; then
-    echo "Entrypoint validation error: Expected a character special file object at $VOLUME_CONTAINER"
-    exit 1
-fi
 
 # CALL THE MAIN SCRIPT
 npm run start "$@"
