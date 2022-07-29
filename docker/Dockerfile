@@ -4,7 +4,6 @@ FROM node:alpine
 COPY ./docker/docker-entrypoint.sh /app/
 COPY ./package.json /app/
 WORKDIR /app
-RUN apk add --no-cache bash
 RUN set NODE_OPTIONS=--max-old-space-size=30720
 RUN npm install
 SHELL ["/bin/bash", "-c"]
