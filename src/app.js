@@ -1,10 +1,9 @@
-const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
+const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, ACTION_TYPE, PROFILE_IDS } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-const { formatTimeDiff } = require('./utils/util')
 
 // initialization
 app.use(express.urlencoded({ extended: true }))
@@ -41,15 +40,32 @@ app.use(
     }, // optional: allows to skip some log messages based on request and/or response
   })
 )
-const startTime = Date.now()
-// health check
-app.get('/health', async (req, res) => {
-  res.json({
-    serverStatus: 'Running',
-    uptime: formatTimeDiff(Date.now(), startTime),
-    module: MODULE_NAME,
-  })
-})
+
+const send = async json => {
+  if (EGRESS_URLS) {
+    const urls = []
+    const eUrls = EGRESS_URLS.replace(/ /g, '')
+    if (eUrls.indexOf(',') !== -1) {
+      urls.push(...eUrls.split(','))
+    } else {
+      urls.push(eUrls)
+    }
+    urls.forEach(async url => {
+      if (url) {
+        const callRes = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(json),
+        })
+        if (!callRes.ok) {
+          console.error(`Error passing response data to ${url}`)
+        }
+      }
+    })
+  }
+}
 // main post listener
 app.post('/', async (req, res) => {
   const json = req.body
@@ -58,29 +74,15 @@ app.post('/', async (req, res) => {
   if (!json) {
     return res.status(400).json({ status: false, message: 'Payload not provided.' })
   }
-  if (PROFILE_IDS !== '' && MATCHED_URL !== '' && json.tags) {
+  if (PROFILE_IDS !== '' && json.tags) {
     if (json.tags.deviceProfileId) {
       const ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
       if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
-        await fetch(MATCHED_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(json),
-        })
-        return res.status(200).json({ status: true, message: 'Payload forwarded to matched URL.' })
+        if (ACTION_TYPE === 'forward') {
+          await send(json)
+        }
       }
     }
-  }
-  if (EGRESS_URLS) {
-    await fetch(EGRESS_URLS, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(json),
-    })
   }
   return res.end()
 })
