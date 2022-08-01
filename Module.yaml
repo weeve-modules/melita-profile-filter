@@ -28,6 +28,15 @@ envs:                                   # Array of environment variables that wi
       - skip
       - forward
     dependencies: []
+  - name: No profile available action
+    key: NA_ACTION_TYPE
+    description: Action taken on payload if profile IDs are not available
+    value: 'forward'
+    type: 'select'
+    options:
+      - skip
+      - forward
+    dependencies: []
 ports:                                  # Array of ports that will be exposed by the module.
   - container: 8080                     # Port number from the container.
     host: 8080                          # Port number to map on the host.

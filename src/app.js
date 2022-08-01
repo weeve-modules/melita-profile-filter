@@ -1,4 +1,12 @@
-const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, ACTION_TYPE, PROFILE_IDS } = require('./config/config.js')
+const {
+  EGRESS_URLS,
+  INGRESS_HOST,
+  INGRESS_PORT,
+  MODULE_NAME,
+  ACTION_TYPE,
+  NA_ACTION_TYPE,
+  PROFILE_IDS,
+} = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
@@ -83,6 +91,8 @@ app.post('/', async (req, res) => {
         }
       }
     }
+  } else if (NA_ACTION_TYPE === 'forward') {
+    await send(json)
   }
   return res.end()
 })
