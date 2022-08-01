@@ -83,8 +83,6 @@ app.post('/', async (req, res) => {
         }
       }
     }
-  } else {
-    await send(json)
   }
   return res.end()
 })
