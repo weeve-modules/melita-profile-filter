@@ -11,6 +11,6 @@ services:
       INGRESS_HOST: "0.0.0.0"
       INGRESS_PORT: "80"
       PROFILE_IDS: ''
-      MATCHED_URL: ''
+      ACTION_TYPE: 'forward'
     ports:
       - 80:80

@@ -82,10 +82,10 @@ Module filters Melita payloads by profile IDs and matched payloads forwards to n
 
 ## Environment Variables
 
-| Environment Variables | type   | Description                  |
-| --------------------- | ------ | ---------------------------- |
-| PROFILE_IDS           | string | List of profile IDs to match |
-| MATCHED_URL           | string | URL for matched profile IDs  |
+| Environment Variables | type   | Description                             |
+| --------------------- | ------ | --------------------------------------- |
+| PROFILE_IDS           | string | List of profile IDs to match            |
+| ACTION_TYPE           | string | Action taken if payload matches the IDs |
 
 ### Module Specific
 

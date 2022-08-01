@@ -1,4 +1,4 @@
-const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, MATCHED_URL, PROFILE_IDS } = require('./config/config.js')
+const { EGRESS_URLS, INGRESS_HOST, INGRESS_PORT, MODULE_NAME, ACTION_TYPE, PROFILE_IDS } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
 const app = express()
@@ -40,29 +40,8 @@ app.use(
     }, // optional: allows to skip some log messages based on request and/or response
   })
 )
-// main post listener
-app.post('/', async (req, res) => {
-  const json = req.body
-  // for some reason melita is sending JSON structure from payload, and not payload property
-  // so to be sure, we will support both
-  if (!json) {
-    return res.status(400).json({ status: false, message: 'Payload not provided.' })
-  }
-  if (PROFILE_IDS !== '' && MATCHED_URL !== '' && json.tags) {
-    if (json.tags.deviceProfileId) {
-      const ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
-      if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
-        await fetch(MATCHED_URL, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(json),
-        })
-        return res.status(200).json({ status: true, message: 'Payload forwarded to matched URL.' })
-      }
-    }
-  }
+
+const send = async json => {
   if (EGRESS_URLS) {
     const urls = []
     const eUrls = EGRESS_URLS.replace(/ /g, '')
@@ -85,6 +64,27 @@ app.post('/', async (req, res) => {
         }
       }
     })
+  }
+}
+// main post listener
+app.post('/', async (req, res) => {
+  const json = req.body
+  // for some reason melita is sending JSON structure from payload, and not payload property
+  // so to be sure, we will support both
+  if (!json) {
+    return res.status(400).json({ status: false, message: 'Payload not provided.' })
+  }
+  if (PROFILE_IDS !== '' && json.tags) {
+    if (json.tags.deviceProfileId) {
+      const ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
+      if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
+        if (ACTION_TYPE === 'forward') {
+          await send(json)
+        }
+      }
+    }
+  } else {
+    await send(json)
   }
   return res.end()
 })
