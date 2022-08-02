@@ -71,6 +71,8 @@ const send = async json => {
         }
       }
     })
+  } else {
+    console.error('EGRESS_URLS is not provided.')
   }
 }
 // main post listener
