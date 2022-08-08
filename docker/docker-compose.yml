@@ -12,5 +12,7 @@ services:
       INGRESS_PORT: "80"
       PROFILE_IDS: ''
       ACTION_TYPE: 'forward'
+      NA_ACTION_TYPE: 'forward'
+      DEBUG: 'true'
     ports:
       - 80:80
