@@ -8,5 +8,4 @@ module.exports = {
   ACTION_TYPE: env('ACTION_TYPE', 'forward'),
   NA_ACTION_TYPE: env('NA_ACTION_TYPE', 'forward'),
   MODULE_NAME: env('MODULE_NAME', 'Melita Profile Filter'),
-  DEBUG: env('MODULE_NAME', 'true'),
 }
