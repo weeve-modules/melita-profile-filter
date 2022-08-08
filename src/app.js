@@ -6,7 +6,6 @@ const {
   ACTION_TYPE,
   NA_ACTION_TYPE,
   PROFILE_IDS,
-  DEBUG,
 } = require('./config/config.js')
 const fetch = require('node-fetch')
 const express = require('express')
@@ -84,19 +83,18 @@ app.post('/', async (req, res) => {
   if (!json) {
     return res.status(400).json({ status: false, message: 'Payload not provided.' })
   }
-  if (DEBUG === 'true') console.log(`Profile IDs: ${PROFILE_IDS}`)
   if (PROFILE_IDS !== '' && json.tags) {
     if (json.tags.deviceProfileId) {
       const ids = PROFILE_IDS.indexOf(',') !== -1 ? PROFILE_IDS.replace(/ /g, '').split(',') : PROFILE_IDS
       if (ids.indexOf(json.tags.deviceProfileId) !== -1) {
         if (ACTION_TYPE === 'forward') {
-          if (DEBUG === 'true') console.log(`Forwarding JSON to ${EGRESS_URLS}: ${JSON.stringify(json)}`)
           await send(json)
         }
+      } else if (NA_ACTION_TYPE === 'forward') {
+        await send(json)
       }
     }
   } else if (NA_ACTION_TYPE === 'forward') {
-    if (DEBUG === 'true') console.log(`Forwarding JSON to ${EGRESS_URLS}: ${JSON.stringify(json)}`)
     await send(json)
   }
   return res.end()
